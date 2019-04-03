@@ -1,0 +1,346 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="js/Game.js"></script>
+
+<style>
+	.square {
+		border: 1px outset black;
+		height:25px;
+		width:25px;
+		cursor:pointer;
+	}
+	.col-centered{
+	    float: none;
+	    margin: 0 auto;
+	}
+</style>
+
+</head>
+<body data-ng-app="GamesApp" data-ng-controller="GamesController">
+
+<div class="jumbotron text-center">
+	<h2>Juegos</h2>
+	<div id="mensajeCorto"></div>	
+</div>
+
+<div class="jumbotron text-center">
+	<div class="row" id="divMenu">
+		<div class="col-sm-3"></div>
+		<div class="col-sm-3" id="mostrarLogin">
+			<a>Login</a>
+		</div>
+		<div class="col-sm-3" id="mostrarRegistro">
+			<a>Registro</a>
+		</div>
+		<div class="col-sm-3"></div>
+	</div>
+	<div class="row" id="logout" style="display:none">
+		<div class="col-sm-4"></div>
+		<div class="col-sm-2">
+			<a data-ng-click="logout()">Salir</a>
+		</div>
+		<div class="col-sm-4"></div>
+	</div>
+	
+	<div class="container" id="divFormularios">
+		<div class="row">
+			<div class="col-sm-12 col-centered">
+				<div id="divLogin" style="display:none">
+					<b>Login</b><br>
+					<input type="text" id="loginUserName" data-ng-model="userName" placeholder="user name"><br>
+					<input type="password" id="loginPwd" data-ng-model="pwd" placeholder="password"><br>
+					<button data-ng-click="login()" id="btnLogin">Login</button><br>
+					<button data-ng-click="solicitarToken()" id="btnRecuperarPwd">Recuperar password</button><br>
+				</div>
+				<div id="divRegistro" style="display:none">
+					<b>Registro</b><br>
+					<input type="email" placeholder="email" data-ng-model="email" id="registroEmail"><br>
+					<input type="text" placeholder="user name" data-ng-model="userName" id="registroUserName"><br>
+					<input type="password" placeholder="password" data-ng-model="pwd1" id="registroPwd1"><br>
+					<input type="password" placeholder="repeat your password" data-ng-model="pwd2" id="registroPwd2"><br>
+					<button data-ng-click="register()" id="registroBtn">Register</button><br>
+				</div>
+				<div id="divSeleccionDeJuego" style="display:none">
+					<select data-ng-model="game.name" data-ng-options="game for game in games"></select>
+					<button data-ng-click="joinGame()" id="buttonJoinGame">Join game</button>	
+				</div>
+			</div>
+		</div>
+		
+		<div class="container" id="divPartida">
+			<div class="row">
+				<div class="col-sm-12" id="opponent">
+				</div>
+				<div class="col-sm-12" id="tictactoeBoard" style="display:none">
+					<table border="1">
+						<tr>
+							<td>
+								<button data-ng-click="move([0,0])" class="square" id="00"></button>
+								<button data-ng-click="move([0,1])" class="square" id="01"></button>
+								<button data-ng-click="move([0,2])" class="square" id="02"></button><br>
+								<button data-ng-click="move([1,0])" class="square" id="10"></button>
+								<button data-ng-click="move([1,1])" class="square" id="11"></button>
+								<button data-ng-click="move([1,2])" class="square" id="12"></button><br>
+								<button data-ng-click="move([2,0])" class="square" id="20"></button>
+								<button data-ng-click="move([2,1])" class="square" id="21"></button>
+								<button data-ng-click="move([2,2])" class="square" id="22"></button><br>
+							</td>
+						</tr>
+					</table>				
+				</div>
+				<div class="col-sm-12" id="turnTTT">
+				</div>
+				<div class="col-sm-12" id="messagesTTT">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+$(document).ready(function() {
+	$("#mostrarLogin").click(function() {
+		$('#divLogin').show();
+		$('#divRegistro').hide()
+	}),
+	$("#mostrarRegistro").click(function() {
+		$('#divLogin').hide();
+		$('#divRegistro').show()
+	})
+});
+
+
+var app=angular.module("GamesApp", []);
+app.controller("GamesController", function($scope, $http) {
+	$scope.userName="";
+	$scope.pwd="";
+	$scope.pwd1="";
+	$scope.pwd2="";
+	$scope.email="";
+	$scope.estado="Desconectado";
+	
+	$scope.login = function() {
+		var recurso="/login";
+		var data = { 
+			type : "Login",
+			userName : $scope.userName, 
+			pwd : $scope.pwd
+		};
+		data = JSON.stringify(data);
+		var config = {
+			headers : {
+				'Content-Type' : 'application/json'
+			}		
+		};
+		$http.post(recurso, data, config).then(
+			function(response) {
+				var type=response.data.type;
+				if (type=="OK") {
+					$scope.userName=response.data.resultado.userName;
+					$("#divMenu").hide();
+					$("#divLogin").hide();
+					$("#divRegistro").hide();
+					$("#logout").show();
+					$("#divSeleccionDeJuego").show();
+					sessionStorage.userName=$scope.userName;
+					$("#mensajeCorto").html("Conectado como " + $scope.userName);
+					$scope.loadGames();
+					$scope.conectar();					
+				} else {
+					$("#mensajeCorto").html(response.data.message);
+				}
+			},
+			function(response) {
+				$("#mensajeCorto").html(response.data.message);
+			}
+		);
+	};
+	
+	$scope.solicitarToken = function() {
+		var recurso="/requestToken";
+		var data="userName=" + $scope.userName;
+		var config = {
+				headers : {
+					'Content-Type' : 'application/x-www-form-urlencoded'
+				}		
+			};
+		$http.post(recurso, data, config).then(
+			function(respuesta) {
+				sessionStorage.token=respuesta.data.id;
+				$("#mensajeCorto").html("<a href='resetPwd.html'>Haz clic aquí</a>");
+			},
+			function(respuesta) {
+				$("#mensajeCorto").html(respuesta.data.message);
+			}
+		);
+	};
+	
+	$scope.register = function() {
+		var recurso="/register";
+		var data = { 
+			type : "Register",
+			userName : $scope.userName, 
+			email : $scope.email,
+			pwd1 : $scope.pwd1,
+			pwd2 : $scope.pwd2
+		};
+		data = JSON.stringify(data);
+		var config = {
+				headers : {
+					'Content-Type' : 'application/json'
+				}		
+			};
+		$http.post(recurso, data, config).then(
+			function(response) {
+				if (response.data.type=="OK") {
+					$("#mensajeCorto").html("Registrado correctamente");
+				} else {
+					$("#mensajeCorto").html(response.data.message);
+				}
+			},
+			function(response) {
+				$("#mensajeCorto").html(response.data.message);
+			}
+		);
+	}
+	
+	$scope.loadGames = function() {
+		$http.get("/getGames").then(
+			function(response) {
+				var type=response.data.type;
+				var resultado=response.data.resultado;
+				if (type=="OK") {
+					$scope.games=resultado.games;
+				}
+			}
+		);
+	};
+	
+	$scope.joinGame = function() {
+		var recurso="/joinGame";
+		var data = { 
+			type : "JoinGame",
+			gameName : $scope.game.name
+		};
+		data = "p=" + JSON.stringify(data);
+		var config = {
+			headers : {
+				'Content-Type' : 'application/x-www-form-urlencoded'
+			}		
+		};
+		$http.post(recurso, data, config).then(
+			function(response) {
+				var type=response.data.type;
+				var resultado=response.data.resultado;
+				if (type=="OK") {
+					$("#divSeleccionDeJuego").hide();
+					if (resultado.playerB==undefined)
+						$("#opponent").show().html("Esperando oponente para una partida de " + $scope.game.name);
+				}
+			},
+			function(response) {
+				alert("Error: " + response.message);
+			}
+		);
+	};
+	
+	$scope.conectar = function() {
+		var url="ws://" + window.location.host + "/gamesws";
+		if ($scope.userName!=undefined && $scope.userName!=null)
+			url=url + "?userName=" + $scope.userName;
+		$scope.ws=new WebSocket(url);
+		
+		$scope.ws.onopen = function() {
+			$scope.$apply($scope.estado="Conectado");
+		}
+		$scope.ws.onmessage = function(mensaje) {
+			var data=JSON.parse(mensaje.data);
+			console.log(data);
+			var type=data.type;
+			if (type=="Match") {
+				var userNameA=data.playerA.userName;
+				var userNameB=data.playerB.userName;
+				var opponentUserName;
+				if (userNameA==sessionStorage.userName)
+					opponentUserName=userNameB;
+				else
+					opponentUserName=userNameA;
+				var gameName=data.gameName;
+				$("#opponent").show().html("Jugando a " + gameName + " contra " + opponentUserName);
+				if (gameName=="tictactoe") {
+					$("#tictactoeBoard").show();
+					$("#turnTTT").html("Turno de " + data.currentPlayerUserName);
+					$("#messagesTTT").show();
+				}
+				return;
+			}
+			if (type=="Movement") {
+				$("#messagesTTT").html("");
+				$("#turnTTT").html("Turno de " + data.currentPlayerUserName);
+				var coordinates=data.coordinates;
+				if (data.mover==$scope.userName)
+					document.getElementById(coordinates[0] + "" + coordinates[1]).innerHTML="X";
+				else
+					document.getElementById(coordinates[0] + "" + coordinates[1]).innerHTML="O";
+				if (data.winnerName) {
+					$("#messagesTTT").html("Ha ganado " + data.winnerName + ". Pulsa <a href='javascript:restaurar()'>aquí</a> para empezar otra partida.");
+				}
+				if (data.draw) {
+					$("#messagesTTT").html("Habéis empatado. Pulsa <a href='javascript:restaurar()'>aquí</a> para empezar otra partida.");
+				}
+				return;
+			}
+			if (type=="Error") {
+				var message=JSON.parse(mensaje.data).message;
+				$("#messagesTTT").html(message);
+			}
+		}
+		
+		$scope.ws.onerror = function(mensaje) {
+			$scope.$apply($scope.estado="Error: " + mensaje.data);
+			console.log("Error: " + mensaje.data);
+		}
+		
+		$scope.ws.onclose = function(mensaje) {
+			$scope.$apply($scope.estado="Closed");
+		}
+	};
+	
+	$scope.move = function(coordinates) {
+		var p = {
+			type : "Movement",
+			coordinates : coordinates
+		};
+		$scope.ws.send(JSON.stringify(p));
+	}
+	
+	$scope.logout = function() {
+		$http.get("/logout").then(
+			function(respuesta) {
+				window.location.reload();
+			}
+		);
+	}
+});
+
+function restaurar() {	
+	for (var i=0; i<3; i++) {
+		for (var j=0; j<3; j++) {
+			document.getElementById("" + i + j).innerHTML="";
+		}
+	}
+	$("#tictactoeBoard").hide();
+	$("#opponent").hide().html("");
+	$("#turnTTT").hide().html("");
+	$("#messagesTTT").hide().html("");
+	$("#divSeleccionDeJuego").show();
+}
+</script>
+
+</body>
+</html>
