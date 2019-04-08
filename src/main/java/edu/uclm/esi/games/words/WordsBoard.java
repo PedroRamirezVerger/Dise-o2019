@@ -11,8 +11,8 @@ public class WordsBoard extends Board {
 
 	public WordsBoard(WordsMatch wordsMatch) {
 		this.match=wordsMatch;
-		//this.tablero1= rellenarTablero(tablero1);
-		//this.tablero2= rellenarTablero(tablero2);
+		this.tablero1= rellenarTablero(new String [3][3]);
+		this.tablero2= rellenarTablero(new String [3][3]);
 		
 	}
 
