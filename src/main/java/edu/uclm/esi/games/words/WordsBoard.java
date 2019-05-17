@@ -33,14 +33,14 @@ public class WordsBoard extends Board {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+	 
 
 	@Override
 	public String getContent() {
 		String r="";
-		for (int i=0; i<this.tablero1.length; i++) {
-			for (int j=0; j<this.tablero1[i].length; j++) 
-				r+=this.tablero1[i][j]==null ? ' ' : this.tablero1[i][j];
+		for (int i=0; i<this.palabras.length; i++) {
+			r+=this.palabras[i];
+			r+=" ";
 		}
 		return r;
 		//return "Albacete, Cadiz, Cuenca";

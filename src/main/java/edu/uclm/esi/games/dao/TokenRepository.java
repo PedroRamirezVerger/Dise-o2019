@@ -7,5 +7,5 @@ import edu.uclm.esi.games.model.Token;
 
 @Repository
 public interface TokenRepository extends CrudRepository<Token, String>{
-	public Token findByUserNameAndId(String userName, int idToken);
+	public Token findByUserNameAndId(String userName, int idWord);
 }
