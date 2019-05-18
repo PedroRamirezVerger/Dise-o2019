@@ -90,7 +90,7 @@ public class WSServer extends TextWebSocketHandler {
 			send(session, e);
 		}
 	}
-
+	
 	private void classicRegister(WebSocketSession session, JSONObject jso) throws Exception {
 		String userName=jso.getString("userName");
 		String email=jso.getString("email");

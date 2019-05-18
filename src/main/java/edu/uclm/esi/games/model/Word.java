@@ -7,7 +7,7 @@ import javax.persistence.Id;
 public class Word {
 	@Id
 	private String palabra;
-	
+	//
 	public Word() {
 		
 	}
