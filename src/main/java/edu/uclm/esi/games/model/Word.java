@@ -7,12 +7,13 @@ import javax.persistence.Id;
 public class Word {
 	@Id
 	private String palabra;
-	//
+	
+	
 	public Word() {
 		
 	}
 	
-	public Word(Integer id, String palabra) {
+	public Word(String palabra) {
 		this.palabra=palabra;
 	}
 	

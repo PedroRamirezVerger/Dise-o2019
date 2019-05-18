@@ -23,6 +23,7 @@ import edu.uclm.esi.games.model.Match;
 import edu.uclm.esi.games.model.Player;
 import edu.uclm.esi.games.model.SimplePlayer;
 import edu.uclm.esi.games.model.Token;
+import edu.uclm.esi.games.model.Word;
 import edu.uclm.esi.games.ppt.PPTGame;
 import edu.uclm.esi.games.tictactoe.TictactoeGame;
 import edu.uclm.esi.games.words.WordsGame;
@@ -31,6 +32,7 @@ import edu.uclm.esi.games.ws.WSServer;
 @Component
 public class Manager {
 	private ConcurrentHashMap<Integer, Game> games;
+	private ConcurrentHashMap<Integer, Word> palabras;
 	private ConcurrentHashMap<String, AbstractPlayer> players;
 	protected ConcurrentHashMap<String, Match> inPlayMatches;
 	
@@ -46,6 +48,7 @@ public class Manager {
 	private Manager() {
 		this.inPlayMatches=new ConcurrentHashMap<>();
 		games=new ConcurrentHashMap<>();
+		palabras=new ConcurrentHashMap<>();
 		Game s3x3=new KuarGame(3);
 		games.put(1, s3x3);
 		Game s4x4=new KuarGame(4);
@@ -61,6 +64,9 @@ public class Manager {
 		
 		Game words= new WordsGame();
 		games.put(20, words);
+		
+		Word palabra= new Word("Cerveza");
+		palabras.put(1,palabra);
 		
 		this.players=new ConcurrentHashMap<>();
 	}
@@ -101,7 +107,15 @@ public class Manager {
 			jsa.put(eGames.nextElement().getName());
 		return new JSONObject().put("games", jsa);
 	}
-
+	
+	public JSONObject getPalabras() {
+		JSONArray jsa=new JSONArray();
+		Enumeration<Word> eWords = palabras.elements();
+		while (eWords.hasMoreElements())
+			jsa.put(eWords.nextElement().getPalabra());
+		return new JSONObject().put("palabras", jsa);
+	}
+	
 	public Match move(String idMatch, AbstractPlayer player, JSONArray coordinates) throws Exception {
 		Integer[] iC=new Integer[coordinates.length()];
 		for (int i=0; i<iC.length; i++)
