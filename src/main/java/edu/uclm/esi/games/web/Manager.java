@@ -124,6 +124,7 @@ public class Manager {
 	public JSONObject getPalabras() {
 		JSONArray jsa=new JSONArray();
 		int i=1;
+		//
 		for (Word w : wordsRepo.findAll()) {
 			palabras.put(i, w);
 			i++;
