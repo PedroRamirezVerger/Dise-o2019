@@ -112,7 +112,7 @@ public class Manager {
 		}
 		return null;
 	}
-
+//
 	public JSONObject getGames() {
 		JSONArray jsa=new JSONArray();
 		Enumeration<Game> eGames = games.elements();
