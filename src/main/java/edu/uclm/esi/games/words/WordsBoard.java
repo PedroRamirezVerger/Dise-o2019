@@ -27,7 +27,7 @@ public class WordsBoard extends Board {
 		// TODO Auto-generated method stub
 		
 	}
-
+//
 	@Override
 	public AbstractPlayer getWinner() {
 		// TODO Auto-generated method stub

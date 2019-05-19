@@ -14,7 +14,7 @@ public class WordsMatch extends Match {
 		this.palabras=palabras;
 		this.board= new WordsBoard(this, palabras);
 	}
-
+//
 	@Override
 	protected boolean tieneElTurno(AbstractPlayer player) {
 		return (this.getCurrentPlayer()==0 && player==this.playerA) 

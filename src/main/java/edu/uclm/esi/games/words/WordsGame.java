@@ -19,7 +19,7 @@ public class WordsGame extends Game {
 	public String getName() {
 		return "WordsGame";
 	}
-
+//
 	@Override
 	protected Match createMatch() {
 		

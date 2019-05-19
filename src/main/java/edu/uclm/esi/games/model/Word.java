@@ -18,7 +18,7 @@ public class Word {
 	public Word() {
 		
 	}
-	
+	//
 	public Word(String palabra) {
 		this.palabra=palabra;
 	}

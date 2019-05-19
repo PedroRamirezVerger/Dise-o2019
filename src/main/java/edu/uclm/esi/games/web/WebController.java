@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.uclm.esi.games.model.AbstractPlayer;
 import edu.uclm.esi.games.model.Match;
-
+//
 @RestController
 public class WebController {
 	@CrossOrigin(origins= "*", allowCredentials="true")
