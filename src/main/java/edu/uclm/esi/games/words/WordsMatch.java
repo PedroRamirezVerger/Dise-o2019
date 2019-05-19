@@ -5,12 +5,14 @@ import java.util.Random;
 import edu.uclm.esi.games.model.AbstractPlayer;
 import edu.uclm.esi.games.model.Game;
 import edu.uclm.esi.games.model.Match;
+import edu.uclm.esi.games.model.Word;
 
 public class WordsMatch extends Match {
-
-	public WordsMatch(Game game) {
+	Word[] palabras=new Word[9];
+	public WordsMatch(Game game, Word [] palabras) {
 		super(game);
-		this.board= new WordsBoard(this);
+		this.palabras=palabras;
+		this.board= new WordsBoard(this, palabras);
 	}
 
 	@Override

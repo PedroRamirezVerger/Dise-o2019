@@ -89,6 +89,7 @@ public class WebController {
 		Match match=Manager.get().joinGame(player, gameName);
 		return match;
 	}
+	
 	@ExceptionHandler(Exception.class)
 	public Map<String, String> handleException(Exception ex) {
 		Map<String, String> resultado = new HashMap<String, String>();

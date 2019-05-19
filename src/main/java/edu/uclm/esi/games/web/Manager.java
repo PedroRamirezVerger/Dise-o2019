@@ -1,6 +1,7 @@
 package edu.uclm.esi.games.web;
 
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.UUID;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,6 +16,7 @@ import edu.uclm.esi.games.dao.AbstractPlayerRepository;
 import edu.uclm.esi.games.dao.BoardRepositoryCustom;
 import edu.uclm.esi.games.dao.PlayerRepository;
 import edu.uclm.esi.games.dao.TokenRepository;
+import edu.uclm.esi.games.dao.WordRepository;
 import edu.uclm.esi.games.kuar.KuarGame;
 import edu.uclm.esi.games.model.AbstractPlayer;
 import edu.uclm.esi.games.model.Board;
@@ -44,11 +46,13 @@ public class Manager {
 	private TokenRepository tokensRepo;
 	@Autowired
 	private BoardRepositoryCustom boardsRepo;
+	@Autowired
+	private WordRepository wordsRepo;
 	
 	private Manager() {
 		this.inPlayMatches=new ConcurrentHashMap<>();
 		games=new ConcurrentHashMap<>();
-		palabras=new ConcurrentHashMap<>();
+		this.palabras=new ConcurrentHashMap<>();
 		Game s3x3=new KuarGame(3);
 		games.put(1, s3x3);
 		Game s4x4=new KuarGame(4);
@@ -65,10 +69,19 @@ public class Manager {
 		Game words= new WordsGame();
 		games.put(20, words);
 		
-		Word palabra= new Word("Cerveza");
-		palabras.put(1,palabra);
+		
+		//getPalabrasBBDD();
+/*		
+		Word [] vectorPalabras= getPalabras();
+		for (int i = 0; i < vectorPalabras.length; i++) {
+			palabras.put(i, vectorPalabras[i]);
+		}
+	*/	
 		
 		this.players=new ConcurrentHashMap<>();
+		
+		//AbstractPlayer e =playersRepo.findByUserNameAndPwd("pe", "pe");
+		int i;
 	}
 	
 	private static class ManagerHolder {
@@ -110,11 +123,17 @@ public class Manager {
 	
 	public JSONObject getPalabras() {
 		JSONArray jsa=new JSONArray();
+		int i=1;
+		for (Word w : wordsRepo.findAll()) {
+			palabras.put(i, w);
+			i++;
+		}
 		Enumeration<Word> eWords = palabras.elements();
 		while (eWords.hasMoreElements())
 			jsa.put(eWords.nextElement().getPalabra());
 		return new JSONObject().put("palabras", jsa);
 	}
+	
 	
 	public Match move(String idMatch, AbstractPlayer player, JSONArray coordinates) throws Exception {
 		Integer[] iC=new Integer[coordinates.length()];
@@ -146,6 +165,7 @@ public class Manager {
 	public AbstractPlayer login(String userName, String pwd) throws Exception {
 		if (userName.length()==0 || pwd.length()==0)
 			throw new Exception("Credenciales inválidas");
+		
 		AbstractPlayer player=playersRepo.findByUserNameAndPwd(userName, pwd);
 		if (player==null)
 			throw new Exception("Credenciales inválidas");

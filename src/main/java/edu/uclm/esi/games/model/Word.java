@@ -1,11 +1,17 @@
 package edu.uclm.esi.games.model;
 
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
-@Entity
+@Entity(name="word")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="id")
 public class Word {
 	@Id
+	private Integer id;
 	private String palabra;
 	
 	
