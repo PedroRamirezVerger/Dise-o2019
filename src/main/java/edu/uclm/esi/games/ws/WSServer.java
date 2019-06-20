@@ -233,6 +233,9 @@ public class WSServer extends TextWebSocketHandler {
 		try {
 			JSONObject jso=new JSONObject(new ObjectMapper().writeValueAsString(match));
 			jso.put("type", "Match");
+			jso.put("playerA", match.getPlayerA().getUserName());
+			jso.put("playerB", match.getPlayerB().getUserName());
+			jso.put("tablero", match.getBoard().getContent());
 			send(sessionA.getSession(), jso);
 			send(sessionB.getSession(), jso);
 		} catch (Exception e) {

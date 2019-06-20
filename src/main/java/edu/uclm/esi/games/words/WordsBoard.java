@@ -1,6 +1,7 @@
 package edu.uclm.esi.games.words;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
 
@@ -12,14 +13,15 @@ public class WordsBoard extends Board {
 	private Word [] palabras= new Word[9];
 	private String [][] tablero1;
 	private String [][] tablero2;
-	//private String [] palabras = {"Aberroncho","Mariposa", "Hijo", "Mañana", "Cerveza","Agujero","Gloria", "Pipas","Jamón"};
+	
 	private JSONArray array=new JSONArray();
 
 	public WordsBoard(WordsMatch wordsMatch, Word [] palabras) {
 		this.match=wordsMatch;
-		//this.tablero1= rellenarTablero(new String [3][3]);
-		//this.tablero2= rellenarTablero(new String [3][3]);
 		this.palabras=palabras;
+		this.tablero1= rellenarTablero();
+		this.tablero2= rellenarTablero();
+		
 	}
 
 	@Override
@@ -43,24 +45,49 @@ public class WordsBoard extends Board {
 
 	@Override
 	public String getContent() {
-		String r="";
-		/*for (int i=0; i<this.palabras.length; i++) {
-			r+=this.palabras[i];
-			r+=" ";
-		}*/
-		return r;
-		//return "Albacete, Cadiz, Cuenca";
-	}/*
-	public String[][] rellenarTablero(String[][] tablero) {
+		JSONArray jsa= new JSONArray();
+		JSONObject jsoPalabras= new JSONObject();
+		JSONObject jsoTablero1= new JSONObject();
+		JSONObject jsoTablero2= new JSONObject();
+		for (int i=0; i<this.palabras.length; i++) {
+			array.put(this.palabras[i].getPalabra());
+			
+		}
+		jsoPalabras.put("palabras", array);
+	
+		array=new JSONArray();
+		for (int i=0; i<this.tablero1.length; i++) {
+			for (int j = 0; j < tablero1[i].length; j++) {
+				array.put(this.tablero1[i][j]);
+			}
+		}
+		jsoTablero1.put("tablero1", array);
+		
+		array=new JSONArray();
+		for (int i=0; i<this.tablero2.length; i++) {
+			for (int j = 0; j < tablero2[i].length; j++) {
+				array.put(this.tablero1[i][j]);
+			}
+		}
+		jsoTablero2.put("tablero2", array);
+		jsa.put(jsoPalabras);
+		jsa.put(jsoTablero1);
+		jsa.put(jsoTablero2);
+		JSONObject jso=new JSONObject().put("tablero", jsa);
+		
+		return jso.toString();
+	}
+	public String[][] rellenarTablero() {
 		int c=0;
+		String [][] tablero= new String [3][3];
 		for (int i = 0; i < tablero.length; i++) {
 			for (int j = 0; j < tablero.length; j++) {
-				tablero[i][j]=palabras[c];
+				tablero[i][j]=palabras[c].getPalabra();
 				c++;
 			}
 		}
 		return tablero;
-	}*/
+	}
 	@Override
 	public boolean draw() {
 		return false;

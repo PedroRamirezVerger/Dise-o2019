@@ -1,5 +1,6 @@
 package edu.uclm.esi.games.web;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.UUID;
@@ -29,6 +30,7 @@ import edu.uclm.esi.games.model.Word;
 import edu.uclm.esi.games.ppt.PPTGame;
 import edu.uclm.esi.games.tictactoe.TictactoeGame;
 import edu.uclm.esi.games.words.WordsGame;
+import edu.uclm.esi.games.words.WordsMatch;
 import edu.uclm.esi.games.ws.WSServer;
 
 @Component
@@ -52,7 +54,7 @@ public class Manager {
 	private Manager() {
 		this.inPlayMatches=new ConcurrentHashMap<>();
 		games=new ConcurrentHashMap<>();
-		this.palabras=new ConcurrentHashMap<>();
+		palabras=new ConcurrentHashMap<>();
 		Game s3x3=new KuarGame(3);
 		games.put(1, s3x3);
 		Game s4x4=new KuarGame(4);
@@ -68,20 +70,10 @@ public class Manager {
 		
 		Game words= new WordsGame();
 		games.put(20, words);
-		
-		
-		//getPalabrasBBDD();
-/*		
-		Word [] vectorPalabras= getPalabras();
-		for (int i = 0; i < vectorPalabras.length; i++) {
-			palabras.put(i, vectorPalabras[i]);
-		}
-	*/	
-		
+			
 		this.players=new ConcurrentHashMap<>();
 		
-		//AbstractPlayer e =playersRepo.findByUserNameAndPwd("pe", "pe");
-		int i;
+
 	}
 	
 	private static class ManagerHolder {
@@ -104,6 +96,9 @@ public class Manager {
 		while (games.hasMoreElements()) {
 			Game game=games.nextElement();
 			if (game.getName().equals(gameName)) {
+				if(game.getName().equals("WordsGame")) {
+					game.setPalabras(getPalabrasBD());
+				}
 				Match match = game.getMatch(player);
 				if (match.isComplete())
 					WSServer.startMatch(match);
@@ -121,6 +116,19 @@ public class Manager {
 		return new JSONObject().put("games", jsa);
 	}
 	
+	public ArrayList<Word> getPalabrasBD() {
+		ArrayList <Word> listaPalabras = new ArrayList<Word>();
+		int i=1;
+		//
+		for (Word w : wordsRepo.findAll()) {
+			palabras.put(i, w);
+			i++;
+		}
+		Enumeration<Word> eWords = palabras.elements();
+		while (eWords.hasMoreElements())
+			listaPalabras.add(eWords.nextElement());
+		return listaPalabras;
+	}
 	public JSONObject getPalabras() {
 		JSONArray jsa=new JSONArray();
 		int i=1;
@@ -134,7 +142,6 @@ public class Manager {
 			jsa.put(eWords.nextElement().getPalabra());
 		return new JSONObject().put("palabras", jsa);
 	}
-	
 	
 	public Match move(String idMatch, AbstractPlayer player, JSONArray coordinates) throws Exception {
 		Integer[] iC=new Integer[coordinates.length()];

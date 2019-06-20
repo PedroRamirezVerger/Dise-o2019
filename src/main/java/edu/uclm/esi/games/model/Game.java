@@ -1,5 +1,6 @@
 package edu.uclm.esi.games.model;
 
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import edu.uclm.esi.games.web.Manager;
@@ -34,7 +35,8 @@ public abstract class Game {
 	public ConcurrentHashMap<String, Match> getPendingMatches() {
 		return pendingMatches;
 	}
-
+	public abstract void setPalabras(ArrayList<Word> palabras);
+	
 	protected abstract Match createMatch();
 	
 	public void removePendingMatch(String idMatch) {

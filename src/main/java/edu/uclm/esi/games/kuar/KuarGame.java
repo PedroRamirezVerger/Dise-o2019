@@ -1,10 +1,12 @@
 package edu.uclm.esi.games.kuar;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import edu.uclm.esi.games.model.Board;
 import edu.uclm.esi.games.model.Game;
 import edu.uclm.esi.games.model.Match;
+import edu.uclm.esi.games.model.Word;
 
 public class KuarGame extends Game {
 	private int rows;
@@ -32,5 +34,11 @@ public class KuarGame extends Game {
 	    
 	    KuarBoard board=new KuarBoard(id, 3, contenido);
 		return board;
+	}
+
+	@Override
+	public void setPalabras(ArrayList<Word> palabras) {
+		// TODO Auto-generated method stub
+		
 	}
 }
