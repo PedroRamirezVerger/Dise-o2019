@@ -20,8 +20,7 @@ public class WordsMatch extends Match {
 //
 	@Override
 	protected boolean tieneElTurno(AbstractPlayer player) {
-		return (this.getCurrentPlayer()==0 && player==this.playerA) 
-				|| (this.getCurrentPlayer()==1 && player==playerB);
+		return true;
 	}
 
 	public void setPalabras(Word [] palabras) {

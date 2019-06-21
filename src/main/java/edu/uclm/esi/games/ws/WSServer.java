@@ -242,6 +242,21 @@ public class WSServer extends TextWebSocketHandler {
 			e.printStackTrace();
 		}
 	}
+	public static void empezarEspera(Match match) {
+		AbstractPlayer playerA=match.getPlayerA();
+		AbstractPlayer playerB=match.getPlayerB();
+		WSSession sessionA=sessions.findByUserName(playerA.getUserName());
+		WSSession sessionB=sessions.findByUserName(playerB.getUserName());
+		try {
+			JSONObject jso=new JSONObject(new ObjectMapper().writeValueAsString(match));
+			jso.put("type", "FinEspera");
+			//esperar 
+			send(sessionA.getSession(), jso);
+			send(sessionB.getSession(), jso);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	private void logout(WebSocketSession session, JSONObject jso) {
 		String userName=jso.optString("userName");

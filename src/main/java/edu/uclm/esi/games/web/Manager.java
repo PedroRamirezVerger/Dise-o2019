@@ -100,8 +100,10 @@ public class Manager {
 					game.setPalabras(getPalabrasBD());
 				}
 				Match match = game.getMatch(player);
-				if (match.isComplete())
+				if (match.isComplete()) {
 					WSServer.startMatch(match);
+					WSServer.empezarEspera(match);
+				}
 				return match;
 			}
 		}

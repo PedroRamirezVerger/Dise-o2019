@@ -13,7 +13,9 @@ import edu.uclm.esi.games.model.Board;
 import edu.uclm.esi.games.model.Word;
 
 public class WordsBoard extends Board {
-	private Word [] palabras= new Word[9];
+	private Word [] palabras= new Word[9];//[0, 1, 2 ....]
+	private int contadorPlayerA=0;
+	private int contadorPlayerB=0;
 	private String [][] tablero1;
 	private String [][] tablero2;
 	
@@ -24,19 +26,43 @@ public class WordsBoard extends Board {
 		this.palabras=palabras;
 		this.tablero1= rellenarTablero();
 		this.tablero2= rellenarTablero();
-		
+		this.setContadorPlayerA(0);
+		this.setContadorPlayerB(0);
 	}
 
 	@Override
 	public void move(AbstractPlayer player, Integer[] coordinates) throws Exception {
-		// TODO Auto-generated method stub
-		
+		if (player==match.getPlayerA()) {
+			if(tablero1[coordinates[0]][coordinates[1]]==palabras[contadorPlayerA].getPalabra()) {
+				
+				setContadorPlayerA(contadorPlayerA++);
+				//avisar al cliente de acierto: actualizar tableros 
+				
+			}else {
+				setContadorPlayerA(0);
+				//avisar de fallo: ocultar palabras etc
+			}
+		}else if(player==match.getPlayerB()) {
+			
+			if(tablero2[coordinates[0]][coordinates[1]]==palabras[contadorPlayerB].getPalabra()) {
+				setContadorPlayerB(contadorPlayerB++);
+				//avisar al cliente de acierto
+			}else {
+				setContadorPlayerB(0);
+				//avisar de fallo
+			}
+		}
 	}
 //
 	@Override
 	public AbstractPlayer getWinner() {
-		// TODO Auto-generated method stub
-		return null;
+		if(getContadorPlayerA()==palabras.length-1) {
+			return match.getPlayerA();
+		} else if(getContadorPlayerB()==palabras.length-1) {
+			return match.getPlayerB();
+		}else{
+			return null;
+		}
 	}
 
 	@Override
@@ -106,6 +132,22 @@ public class WordsBoard extends Board {
 	      lista[i] = aux;
 	    }
 	    return lista;
+	}
+
+	public int getContadorPlayerA() {
+		return contadorPlayerA;
+	}
+
+	public void setContadorPlayerA(int contadorPlayerA) {
+		this.contadorPlayerA = contadorPlayerA;
+	}
+
+	public int getContadorPlayerB() {
+		return contadorPlayerB;
+	}
+
+	public void setContadorPlayerB(int contadorPlayerB) {
+		this.contadorPlayerB = contadorPlayerB;
 	}
 
 }
