@@ -95,7 +95,7 @@ public class WordsBoard extends Board {
 		array=new JSONArray();
 		for (int i=0; i<this.tablero2.length; i++) {
 			for (int j = 0; j < tablero2[i].length; j++) {
-				array.put(this.tablero1[i][j]);
+				array.put(this.tablero2[i][j]);
 			}
 		}
 		jsoTablero2.put("tablero2", array);
@@ -108,7 +108,7 @@ public class WordsBoard extends Board {
 	}
 	public String[][] rellenarTablero() {
 		int c=0;
-		palabras=Mezclar(palabras);
+		Mezclar(palabras);
 		String [][] tablero= new String [3][3];
 		for (int i = 0; i < tablero.length; i++) {
 			for (int j = 0; j < tablero.length; j++) {
@@ -122,7 +122,7 @@ public class WordsBoard extends Board {
 	public boolean draw() {
 		return false;
 	}
-	public Word [] Mezclar(Word [] lista) {
+	public void Mezclar(Word [] lista) {
 	    Random rnd = ThreadLocalRandom.current();
 	    for (int i = lista.length - 1; i > 0; i--)
 	    {
@@ -131,7 +131,7 @@ public class WordsBoard extends Board {
 	      lista[aleatorio] = lista[i];
 	      lista[i] = aux;
 	    }
-	    return lista;
+	   
 	}
 
 	public int getContadorPlayerA() {
