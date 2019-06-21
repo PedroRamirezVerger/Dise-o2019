@@ -1,5 +1,8 @@
 package edu.uclm.esi.games.words;
 
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -79,6 +82,7 @@ public class WordsBoard extends Board {
 	}
 	public String[][] rellenarTablero() {
 		int c=0;
+		palabras=Mezclar(palabras);
 		String [][] tablero= new String [3][3];
 		for (int i = 0; i < tablero.length; i++) {
 			for (int j = 0; j < tablero.length; j++) {
@@ -91,6 +95,17 @@ public class WordsBoard extends Board {
 	@Override
 	public boolean draw() {
 		return false;
+	}
+	public Word [] Mezclar(Word [] lista) {
+	    Random rnd = ThreadLocalRandom.current();
+	    for (int i = lista.length - 1; i > 0; i--)
+	    {
+	      int aleatorio = rnd.nextInt(i + 1);
+	      Word aux = lista[aleatorio];
+	      lista[aleatorio] = lista[i];
+	      lista[i] = aux;
+	    }
+	    return lista;
 	}
 
 }
