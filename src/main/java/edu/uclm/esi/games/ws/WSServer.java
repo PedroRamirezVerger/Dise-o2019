@@ -2,6 +2,7 @@ package edu.uclm.esi.games.ws;
 
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -249,8 +250,8 @@ public class WSServer extends TextWebSocketHandler {
 		WSSession sessionB=sessions.findByUserName(playerB.getUserName());
 		try {
 			JSONObject jso=new JSONObject(new ObjectMapper().writeValueAsString(match));
-			jso.put("type", "FinEspera");
-			//esperar 
+			jso.put("type", "finEspera");
+			TimeUnit.SECONDS.sleep(5); 
 			send(sessionA.getSession(), jso);
 			send(sessionB.getSession(), jso);
 		} catch (Exception e) {
