@@ -6,6 +6,7 @@ import edu.uclm.esi.games.model.Board;
 import edu.uclm.esi.games.model.Game;
 import edu.uclm.esi.games.model.Match;
 import edu.uclm.esi.games.model.Word;
+import edu.uclm.esi.games.web.Manager;
 
 public class WordsMatch extends Match {
 	Word[] palabras=new Word[9];
@@ -22,7 +23,14 @@ public class WordsMatch extends Match {
 	protected boolean tieneElTurno(AbstractPlayer player) {
 		return true;
 	}
-
+	@Override
+	public void actualizarTablero() {
+		Manager.get().actualizarTablero(getIdMatch());
+	}
+	@Override
+	public int [] getContadores() {
+		return board.getContadores();
+	}
 	public void setPalabras(Word [] palabras) {
 		this.palabras=palabras;
 	}
@@ -37,4 +45,5 @@ public class WordsMatch extends Match {
 		// TODO Auto-generated method stub
 		
 	}
+	
 }

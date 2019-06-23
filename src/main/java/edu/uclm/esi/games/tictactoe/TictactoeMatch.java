@@ -23,4 +23,16 @@ public class TictactoeMatch extends Match {
 	protected boolean tieneElTurno(AbstractPlayer player) {
 		return (this.getCurrentPlayer()==0 && player==this.playerA) || (this.getCurrentPlayer()==1 && player==playerB);
 	}
+
+	@Override
+	public void actualizarTablero() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int[] getContadores() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

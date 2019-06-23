@@ -30,15 +30,7 @@ public class WebController {
 		resultado.put("type", "OK");
 		return resultado.toString();
 	}
-	@CrossOrigin(origins= "*", allowCredentials="true")
-	@GetMapping(value = "/getPalabras", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public String getPalabras() {
-		JSONObject jsoRespuesta=Manager.get().getPalabras();
-		JSONObject resultado=new JSONObject();
-		resultado.put("resultado", jsoRespuesta);
-		resultado.put("type", "OK");
-		return resultado.toString();
-	}
+	
 	@CrossOrigin(origins= "*", allowCredentials="true")
 	@PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public String login(HttpSession session, @RequestBody Map<String, String> jso) throws Exception {

@@ -34,31 +34,26 @@ public class WordsBoard extends Board {
 	public void move(AbstractPlayer player, Integer[] coordinates) throws Exception {
 		if (player==match.getPlayerA()) {
 			if(tablero1[coordinates[0]][coordinates[1]]==palabras[contadorPlayerA].getPalabra()) {
-				
 				setContadorPlayerA(contadorPlayerA++);
-				//avisar al cliente de acierto: actualizar tableros 
-				
 			}else {
 				setContadorPlayerA(0);
-				//avisar de fallo: ocultar palabras etc
 			}
 		}else if(player==match.getPlayerB()) {
-			
 			if(tablero2[coordinates[0]][coordinates[1]]==palabras[contadorPlayerB].getPalabra()) {
 				setContadorPlayerB(contadorPlayerB++);
-				//avisar al cliente de acierto
 			}else {
 				setContadorPlayerB(0);
-				//avisar de fallo
 			}
+			
 		}
+		match.actualizarTablero();
 	}
 //
 	@Override
 	public AbstractPlayer getWinner() {
-		if(getContadorPlayerA()==palabras.length-1) {
+		if(getContadorPlayerA()==palabras.length) {
 			return match.getPlayerA();
-		} else if(getContadorPlayerB()==palabras.length-1) {
+		} else if(getContadorPlayerB()==palabras.length) {
 			return match.getPlayerB();
 		}else{
 			return null;
@@ -148,6 +143,12 @@ public class WordsBoard extends Board {
 
 	public void setContadorPlayerB(int contadorPlayerB) {
 		this.contadorPlayerB = contadorPlayerB;
+	}
+
+	@Override
+	public int[] getContadores() {
+		int [] contadores= {getContadorPlayerA(), getContadorPlayerB()};
+		return contadores;
 	}
 
 }

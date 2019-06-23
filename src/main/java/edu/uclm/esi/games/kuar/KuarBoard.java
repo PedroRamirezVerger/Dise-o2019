@@ -69,4 +69,10 @@ public class KuarBoard extends Board {
 	public boolean draw() {
 		return false;
 	}
+
+	@Override
+	public int[] getContadores() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -151,9 +151,15 @@ public class Manager {
 			iC[i]=coordinates.getInt(i);
 		Match match=this.inPlayMatches.get(idMatch);
 		match.move(player, iC);
+		
 		return match;
 	}
-
+	public void actualizarTablero(String idMatch) {
+		Match match = this.inPlayMatches.get(idMatch);
+		
+		WSServer.actualizarTablero(match);
+		
+	}
 	public JSONObject logout(AbstractPlayer player) {
 		JSONObject jso=new JSONObject();
 		this.userLeaves(player.getUserName());
@@ -341,4 +347,6 @@ public class Manager {
 			}
 		}
 	}
+
+	
 }
