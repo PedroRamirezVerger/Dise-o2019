@@ -34,13 +34,13 @@ public class WordsBoard extends Board {
 	public void move(AbstractPlayer player, Integer[] coordinates) throws Exception {
 		if (player==match.getPlayerA()) {
 			if(tablero1[coordinates[0]][coordinates[1]]==palabras[contadorPlayerA].getPalabra()) {
-				setContadorPlayerA(contadorPlayerA++);
+				contadorPlayerA++;
 			}else {
 				setContadorPlayerA(0);
 			}
 		}else if(player==match.getPlayerB()) {
 			if(tablero2[coordinates[0]][coordinates[1]]==palabras[contadorPlayerB].getPalabra()) {
-				setContadorPlayerB(contadorPlayerB++);
+				contadorPlayerB++;
 			}else {
 				setContadorPlayerB(0);
 			}
