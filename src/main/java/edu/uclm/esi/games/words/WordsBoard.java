@@ -19,7 +19,7 @@ public class WordsBoard extends Board {
 	private String [][] tablero1;
 	private String [][] tablero2;
 	
-	private JSONArray array=new JSONArray();
+	
 
 	public WordsBoard(WordsMatch wordsMatch, Word [] palabras) {
 		this.match=wordsMatch;
@@ -69,6 +69,7 @@ public class WordsBoard extends Board {
 
 	@Override
 	public String getContent() {
+		JSONArray array=new JSONArray();
 		JSONArray jsa= new JSONArray();
 		JSONObject jsoPalabras= new JSONObject();
 		JSONObject jsoTablero1= new JSONObject();
@@ -103,11 +104,13 @@ public class WordsBoard extends Board {
 	}
 	public String[][] rellenarTablero() {
 		int c=0;
-		Mezclar(palabras);
+		Word [] auxPalabras= new Word [9];
+		System.arraycopy(palabras, 0, auxPalabras, 0, 9);
+		Mezclar(auxPalabras);
 		String [][] tablero= new String [3][3];
 		for (int i = 0; i < tablero.length; i++) {
 			for (int j = 0; j < tablero.length; j++) {
-				tablero[i][j]=palabras[c].getPalabra();
+				tablero[i][j]=auxPalabras[c].getPalabra();
 				c++;
 			}
 		}
