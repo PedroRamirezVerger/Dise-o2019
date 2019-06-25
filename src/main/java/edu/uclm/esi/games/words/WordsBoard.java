@@ -106,7 +106,7 @@ public class WordsBoard extends Board {
 		int c=0;
 		Word [] auxPalabras= new Word [9];
 		System.arraycopy(palabras, 0, auxPalabras, 0, 9);
-		Mezclar(auxPalabras);
+		mezclar(auxPalabras);
 		String [][] tablero= new String [3][3];
 		for (int i = 0; i < tablero.length; i++) {
 			for (int j = 0; j < tablero.length; j++) {
@@ -120,7 +120,7 @@ public class WordsBoard extends Board {
 	public boolean draw() {
 		return false;
 	}
-	public void Mezclar(Word [] lista) {
+	public void mezclar(Word [] lista) {
 	    Random rnd = ThreadLocalRandom.current();
 	    for (int i = lista.length - 1; i > 0; i--)
 	    {

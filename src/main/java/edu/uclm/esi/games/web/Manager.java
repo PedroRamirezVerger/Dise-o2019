@@ -102,7 +102,9 @@ public class Manager {
 				Match match = game.getMatch(player);
 				if (match.isComplete()) {
 					WSServer.startMatch(match);
-					WSServer.empezarEspera(match);
+					if(game.getName().equals("WordsGame")) {
+						WSServer.empezarEspera(match);
+					}
 				}
 				return match;
 			}
@@ -131,7 +133,14 @@ public class Manager {
 			listaPalabras.add(eWords.nextElement());
 		return listaPalabras;
 	}
-	public JSONObject getPalabras() {
+	public void actualizarTablero(String idMatch) {
+		Match match = this.inPlayMatches.get(idMatch);
+		
+		WSServer.actualizarTablero(match);
+		
+	}
+	/*
+	public JSONObject getPalabras() {///////////////////////////////////////////////////////////////////////
 		JSONArray jsa=new JSONArray();
 		int i=1;
 		//
@@ -144,7 +153,7 @@ public class Manager {
 			jsa.put(eWords.nextElement().getPalabra());
 		return new JSONObject().put("palabras", jsa);
 	}
-	
+	*/
 	public Match move(String idMatch, AbstractPlayer player, JSONArray coordinates) throws Exception {
 		Integer[] iC=new Integer[coordinates.length()];
 		for (int i=0; i<iC.length; i++)
@@ -154,12 +163,7 @@ public class Manager {
 		
 		return match;
 	}
-	public void actualizarTablero(String idMatch) {
-		Match match = this.inPlayMatches.get(idMatch);
-		
-		WSServer.actualizarTablero(match);
-		
-	}
+	
 	public JSONObject logout(AbstractPlayer player) {
 		JSONObject jso=new JSONObject();
 		this.userLeaves(player.getUserName());
