@@ -7,10 +7,12 @@ import edu.uclm.esi.games.model.AbstractPlayer;
 public class WSSession {
 	private WebSocketSession session;
 	private AbstractPlayer player;
+	private String uuid;
 
-	public WSSession(WebSocketSession session, AbstractPlayer player) {
+	public WSSession(WebSocketSession session, AbstractPlayer player, String uuid) {
 		this.session=session;
 		this.player=player;
+		this.uuid=uuid;
 	}
 
 	public WebSocketSession getSession() {
@@ -28,4 +30,9 @@ public class WSSession {
 	public AbstractPlayer getPlayer() {
 		return this.player;
 	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
 }

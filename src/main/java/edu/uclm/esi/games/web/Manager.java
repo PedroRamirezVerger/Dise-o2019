@@ -133,6 +133,7 @@ public class Manager {
 			listaPalabras.add(eWords.nextElement());
 		return listaPalabras;
 	}
+	
 	public void actualizarTablero(String idMatch) {
 		Match match = this.inPlayMatches.get(idMatch);
 		

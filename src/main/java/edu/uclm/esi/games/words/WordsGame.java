@@ -3,13 +3,20 @@ package edu.uclm.esi.games.words;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import edu.uclm.esi.games.dao.WordRepository;
 import edu.uclm.esi.games.model.Game;
 import edu.uclm.esi.games.model.Match;
 import edu.uclm.esi.games.model.Word;
 
+//@Component
 public class WordsGame extends Game {
+	//si no es Component es bin
 	ArrayList<Word> palabras=new ArrayList<Word>();
-	
+	//@Autowired
+	//private WordRepository repo;
 
 	public WordsGame (ArrayList<Word> palabras) {
 		super();

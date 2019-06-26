@@ -25,12 +25,28 @@ public class WSServer extends TextWebSocketHandler {
 
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) {
-		System.out.println(session.getId());
+		//System.out.println(session.getId());
+		System.out.println(session.getUri().getRawQuery());
 		try {
-			Map<String, Object> map = session.getAttributes();
-			AbstractPlayer player = (AbstractPlayer) map.get("player");
-			WSSession wsSession=new WSSession(session, player);
-			sessions.add(wsSession);
+			String query=session.getUri().getRawQuery();
+			String uuid;
+			if (query!=null && query.length()>0) {
+				uuid=query.substring(8, query.length()-3);
+				sessions.replace(uuid, session);
+			} else {
+				Map<String, Object> map = session.getAttributes();
+				AbstractPlayer player = (AbstractPlayer) map.get("player");
+				System.out.println(player.getUserName());
+				uuid = UUID.randomUUID().toString();
+				WSSession wsSession=new WSSession(session, player, uuid);
+				sessions.add(wsSession);
+				JSONObject jso =new JSONObject();
+				jso.put("type", "uuid");
+				jso.put("uuid", uuid);
+				send(session, jso);
+			}
+			
+			
 		}
 		catch (Exception e) {
 			System.out.println(e);
@@ -195,10 +211,11 @@ public class WSServer extends TextWebSocketHandler {
 	}
 
 	private void move(WebSocketSession session, JSONObject jso) {
+		String uuid=jso.getString("uuid");
 		String idMatch=jso.optString("idMatch");
 		JSONArray coordinates=jso.getJSONArray("coordinates");
 		try {
-			WSSession wsSession=sessions.find(session);
+			WSSession wsSession=sessions.findby(uuid);
 			AbstractPlayer player=(AbstractPlayer) wsSession.getPlayer();
 			Match match;
 			if (idMatch.length()==0) {
