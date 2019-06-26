@@ -97,4 +97,10 @@ public class PPTBoard extends Board {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public int[] getContadores() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

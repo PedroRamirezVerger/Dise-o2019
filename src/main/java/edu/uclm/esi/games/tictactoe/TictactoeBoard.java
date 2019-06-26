@@ -102,4 +102,10 @@ public class TictactoeBoard extends Board {
 					return false;
 		return true;
 	}
+
+	@Override
+	public int[] getContadores() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

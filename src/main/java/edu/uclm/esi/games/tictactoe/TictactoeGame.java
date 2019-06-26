@@ -1,7 +1,10 @@
 package edu.uclm.esi.games.tictactoe;
 
+import java.util.ArrayList;
+
 import edu.uclm.esi.games.model.Game;
 import edu.uclm.esi.games.model.Match;
+import edu.uclm.esi.games.model.Word;
 
 public class TictactoeGame extends Game {
 
@@ -18,5 +21,13 @@ public class TictactoeGame extends Game {
 	protected Match createMatch() {
 		return new TictactoeMatch(this);
 	}
+
+	@Override
+	public void setPalabras(ArrayList<Word> palabras) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 }

@@ -114,7 +114,8 @@ public abstract class Match {
 	}
 	
 	protected abstract boolean tieneElTurno(AbstractPlayer player);
-
+	public abstract void actualizarTablero();
+	public abstract int [] getContadores();
 	public abstract void calculateFirstPlayer();
 
 	public void setWinner(AbstractPlayer player) {

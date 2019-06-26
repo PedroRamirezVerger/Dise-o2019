@@ -69,4 +69,6 @@ public abstract class Board {
 	}
 
 	public abstract boolean draw();
+
+	public abstract int[] getContadores();
 }

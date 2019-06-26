@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.uclm.esi.games.model.AbstractPlayer;
 import edu.uclm.esi.games.model.Match;
-
+//
 @RestController
 public class WebController {
 	@CrossOrigin(origins= "*", allowCredentials="true")
@@ -30,6 +30,7 @@ public class WebController {
 		resultado.put("type", "OK");
 		return resultado.toString();
 	}
+	
 	@CrossOrigin(origins= "*", allowCredentials="true")
 	@PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public String login(HttpSession session, @RequestBody Map<String, String> jso) throws Exception {
@@ -80,6 +81,7 @@ public class WebController {
 		Match match=Manager.get().joinGame(player, gameName);
 		return match;
 	}
+	
 	@ExceptionHandler(Exception.class)
 	public Map<String, String> handleException(Exception ex) {
 		Map<String, String> resultado = new HashMap<String, String>();

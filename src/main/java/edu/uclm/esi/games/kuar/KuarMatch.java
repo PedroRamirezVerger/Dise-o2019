@@ -32,4 +32,16 @@ public class KuarMatch extends Match {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void actualizarTablero() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int[] getContadores() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

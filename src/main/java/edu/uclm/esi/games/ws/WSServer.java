@@ -2,6 +2,7 @@ package edu.uclm.esi.games.ws;
 
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -90,7 +91,7 @@ public class WSServer extends TextWebSocketHandler {
 			send(session, e);
 		}
 	}
-
+	
 	private void classicRegister(WebSocketSession session, JSONObject jso) throws Exception {
 		String userName=jso.getString("userName");
 		String email=jso.getString("email");
@@ -205,7 +206,6 @@ public class WSServer extends TextWebSocketHandler {
 				Manager.get().move(match.getIdMatch(), player, coordinates);
 			} else
 				match=Manager.get().move(idMatch, player, coordinates);
-
 			JSONObject jsoMovement=new JSONObject();
 			jsoMovement.put("type", "Movement");
 			jsoMovement.put("coordinates", coordinates);
@@ -233,6 +233,42 @@ public class WSServer extends TextWebSocketHandler {
 		try {
 			JSONObject jso=new JSONObject(new ObjectMapper().writeValueAsString(match));
 			jso.put("type", "Match");
+			jso.put("playerA", match.getPlayerA().getUserName());
+			jso.put("playerB", match.getPlayerB().getUserName());
+			jso.put("tablero", match.getBoard().getContent());
+			send(sessionA.getSession(), jso);
+			send(sessionB.getSession(), jso);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public static void empezarEspera(Match match) {
+		AbstractPlayer playerA=match.getPlayerA();
+		AbstractPlayer playerB=match.getPlayerB();
+		WSSession sessionA=sessions.findByUserName(playerA.getUserName());
+		WSSession sessionB=sessions.findByUserName(playerB.getUserName());
+		try {
+			JSONObject jso=new JSONObject(new ObjectMapper().writeValueAsString(match));
+			jso.put("type", "finEspera");
+			TimeUnit.SECONDS.sleep(5); 
+			send(sessionA.getSession(), jso);
+			send(sessionB.getSession(), jso);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public static void actualizarTablero(Match match) {
+		AbstractPlayer playerA=match.getPlayerA();
+		AbstractPlayer playerB=match.getPlayerB();
+		int contadorPlayerA=match.getContadores()[0];
+		int contadorPlayerB=match.getContadores()[1];
+		WSSession sessionA=sessions.findByUserName(playerA.getUserName());
+		WSSession sessionB=sessions.findByUserName(playerB.getUserName());
+		try {
+			JSONObject jso=new JSONObject(new ObjectMapper().writeValueAsString(match));
+			jso.put("type", "actualizarTablero");
+			jso.put("contadorPlayerA", contadorPlayerA);
+			jso.put("contadorPlayerB", contadorPlayerB);
 			send(sessionA.getSession(), jso);
 			send(sessionB.getSession(), jso);
 		} catch (Exception e) {

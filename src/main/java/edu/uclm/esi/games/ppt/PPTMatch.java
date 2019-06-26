@@ -22,4 +22,16 @@ public class PPTMatch extends Match {
 		return true;
 	}
 
+	@Override
+	public void actualizarTablero() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int[] getContadores() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
