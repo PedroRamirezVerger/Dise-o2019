@@ -37,7 +37,7 @@ public class KuarGame extends Game {
 	}
 
 	@Override
-	public void setPalabras(ArrayList<Word> palabras) {
+	public void setPalabras() {
 		// TODO Auto-generated method stub
 		
 	}

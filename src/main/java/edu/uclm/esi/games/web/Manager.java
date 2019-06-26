@@ -36,7 +36,7 @@ import edu.uclm.esi.games.ws.WSServer;
 @Component
 public class Manager {
 	private ConcurrentHashMap<Integer, Game> games;
-	private ConcurrentHashMap<Integer, Word> palabras;
+	//private ConcurrentHashMap<Integer, Word> palabras;
 	private ConcurrentHashMap<String, AbstractPlayer> players;
 	protected ConcurrentHashMap<String, Match> inPlayMatches;
 	
@@ -48,13 +48,13 @@ public class Manager {
 	private TokenRepository tokensRepo;
 	@Autowired
 	private BoardRepositoryCustom boardsRepo;
-	@Autowired
-	private WordRepository wordsRepo;
+	//@Autowired
+	//private WordRepository wordsRepo;
 	
 	private Manager() {
 		this.inPlayMatches=new ConcurrentHashMap<>();
 		games=new ConcurrentHashMap<>();
-		palabras=new ConcurrentHashMap<>();
+		//palabras=new ConcurrentHashMap<>();
 		Game s3x3=new KuarGame(3);
 		games.put(1, s3x3);
 		Game s4x4=new KuarGame(4);
@@ -97,7 +97,7 @@ public class Manager {
 			Game game=games.nextElement();
 			if (game.getName().equals(gameName)) {
 				if(game.getName().equals("WordsGame")) {
-					game.setPalabras(getPalabrasBD());
+					game.setPalabras();
 				}
 				Match match = game.getMatch(player);
 				if (match.isComplete()) {
@@ -120,19 +120,7 @@ public class Manager {
 		return new JSONObject().put("games", jsa);
 	}
 	
-	public ArrayList<Word> getPalabrasBD() {
-		ArrayList <Word> listaPalabras = new ArrayList<Word>();
-		int i=1;
-		//
-		for (Word w : wordsRepo.findAll()) {
-			palabras.put(i, w);
-			i++;
-		}
-		Enumeration<Word> eWords = palabras.elements();
-		while (eWords.hasMoreElements())
-			listaPalabras.add(eWords.nextElement());
-		return listaPalabras;
-	}
+	
 	
 	public void actualizarTablero(String idMatch) {
 		Match match = this.inPlayMatches.get(idMatch);

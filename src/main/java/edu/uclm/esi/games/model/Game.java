@@ -35,7 +35,7 @@ public abstract class Game {
 	public ConcurrentHashMap<String, Match> getPendingMatches() {
 		return pendingMatches;
 	}
-	public abstract void setPalabras(ArrayList<Word> palabras);
+	public abstract void setPalabras();
 	
 	protected abstract Match createMatch();
 	
