@@ -65,6 +65,7 @@ public class Sessions {
 		// TODO Auto-generated method stub
 		return this.sessionsByUUID.get(uuid);
 	}
+	
 
 	public void replace(String uuid, WebSocketSession session) {
 		WSSession wsSession=this.findby(uuid);
@@ -74,5 +75,11 @@ public class Sessions {
 		WSSession wsSessionNueva=new WSSession(session, player, uuid);
 		this.sessionsByUUID.put(uuid, wsSessionNueva);
 		this.sessionsByUserName.put(player.getUserName(), wsSessionNueva);
+	}
+
+	public void removeById(WebSocketSession session) {
+		// TODO Auto-generated method stub
+		this.sessionsById.remove(session.getId());
+		
 	}
 }

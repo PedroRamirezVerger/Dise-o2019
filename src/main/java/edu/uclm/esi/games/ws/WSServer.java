@@ -33,6 +33,7 @@ public class WSServer extends TextWebSocketHandler {
 			if (query!=null && query.length()>0) {
 				uuid=query.substring(8, query.length()-3);
 				sessions.replace(uuid, session);
+				
 			} else {
 				Map<String, Object> map = session.getAttributes();
 				AbstractPlayer player = (AbstractPlayer) map.get("player");
@@ -212,6 +213,7 @@ public class WSServer extends TextWebSocketHandler {
 
 	private void move(WebSocketSession session, JSONObject jso) {
 		String uuid=jso.getString("uuid");
+		uuid=uuid.substring(1,uuid.length()-1);
 		String idMatch=jso.optString("idMatch");
 		JSONArray coordinates=jso.getJSONArray("coordinates");
 		try {
@@ -317,29 +319,11 @@ public class WSServer extends TextWebSocketHandler {
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
 		try {
 			session.close();
+			sessions.removeById(session);
+			
 		} catch (Throwable e) {
 		}
-		WSSession wsLooserSession = sessions.remove(session);
-		if (wsLooserSession!=null && wsLooserSession.getPlayer()!=null) {
-			AbstractPlayer looser=wsLooserSession.getPlayer();
-			Match match=looser.getCurrentMatch();
-			if (match!=null) {
-				if (match.isComplete()) {
-					AbstractPlayer winner;
-					try {
-						winner = Manager.get().leaveMatch(match.getIdMatch(), looser.getUserName());
-						JSONObject jsWinner=new JSONObject();
-						jsWinner.put("type", "OpponentLeft").put("name", looser.getUserName());
-						WSSession wsSession=WSServer.sessions.findByUserName(winner.getUserName());
-						send(wsSession.getSession(), jsWinner);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				} else {
-					Manager.get().leaveWaitingArea(looser.getUserName(), looser.getCurrentMatch().getGameName(), looser.getCurrentMatch().getIdMatch());	
-				}
-			}
-		}
+		
 	}
 	
 	@Override

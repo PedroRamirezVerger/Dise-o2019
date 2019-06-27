@@ -18,10 +18,6 @@ public class WordsGame extends Game {
 	//@Autowired
 	//private WordRepository repo;
 
-	public WordsGame (ArrayList<Word> palabras) {
-		super();
-		this.palabras=palabras;
-	}
 	
 	public WordsGame() {
 		super();

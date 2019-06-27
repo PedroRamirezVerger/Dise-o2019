@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.UUID;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -101,8 +102,10 @@ public class Manager {
 				}
 				Match match = game.getMatch(player);
 				if (match.isComplete()) {
+					
 					WSServer.startMatch(match);
 					if(game.getName().equals("WordsGame")) {
+						TimeUnit.SECONDS.sleep(1); 
 						WSServer.empezarEspera(match);
 					}
 				}
